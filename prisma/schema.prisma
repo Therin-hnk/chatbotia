@@ -1,0 +1,74 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String    // Hashé (bcrypt ou argon2)
+  name      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  chatbots  Chatbot[]
+
+  @@map("users")
+}
+
+model Chatbot {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  apiKey    String    @unique // Clé publique utilisée par le widget frontend
+  name      String?   // Nom donné par le client (ex: "Support Client", "Chat Ventes")
+  
+  basePrompt String   // Prompt système qui définit le comportement de l'IA
+
+  // Personnalisation visuelle
+  customization ChatbotCustomization?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("chatbots")
+}
+
+// table pour les options de personnalisation (1-to-1 avec Chatbot)
+model ChatbotCustomization {
+  id         String   @id @default(uuid())
+  chatbotId  String   @unique
+  chatbot    Chatbot  @relation(fields: [chatbotId], references: [id], onDelete: Cascade)
+
+  // Couleurs principales
+  primaryColor    String   @default("#3B82F6")   // Bleu par défaut (comme Tailwind blue-500)
+  secondaryColor  String   @default("#1E293B")   // Gris foncé
+  backgroundColor String   @default("#FFFFFF")
+  textColor       String   @default("#000000")
+  userMessageColor String  @default("#E0E7FF")  // Bubble utilisateur
+  botMessageColor  String  @default("#F3F4F6")  // Bubble bot
+
+  // Police
+  fontFamily      String   @default("Inter")     // Ou "Roboto", "Open Sans", etc.
+  fontSize        String   @default("16")        // En px (ex: "14", "16", "18")
+
+  // Autres options courantes
+  borderRadius    String   @default("12")        // En px pour les bulles
+  showLogo        Boolean  @default(true)
+  logoUrl         String?                       // URL d'un logo uploadé par le client
+  welcomeMessage  String?  @default("Bonjour ! Comment puis-je vous aider ?")
+  position        String   @default("bottom-right") // "bottom-right" | "bottom-left"
+
+  // Optionnel : message placeholder dans l'input
+  placeholder     String   @default("Écrivez votre message...")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("chatbot_customizations")
+}

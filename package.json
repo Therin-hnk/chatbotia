@@ -2,25 +2,53 @@
   "name": "chatbotia",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "seed": "tsx prisma/scripts/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "prisma generate",
+    "init_test_data": "tsx prisma/scripts/init_test_data.ts",
+    "db_reset": "tsx prisma/scripts/truncate_all_table.ts",
+    "test": "tsx bin/test.ts",
+    "test:watch": "node test.ts --watch"
   },
   "dependencies": {
+    "@faker-js/faker": "^10.1.0",
+    "@japa/api-client": "^3.1.1",
+    "@japa/assert": "^4.2.0",
+    "@japa/expect-type": "^2.0.4",
+    "@japa/runner": "^5.0.0",
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^7.2.0",
+    "@types/bcrypt": "^6.0.0",
+    "axios": "^1.13.2",
+    "bcrypt": "^6.0.0",
+    "dayjs": "^1.11.19",
+    "faker": "^6.6.6",
+    "ioredis": "^5.8.2",
     "next": "16.1.1",
+    "pg": "^8.16.3",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@prisma/config": "^7.2.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.16.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "prisma": "^7.2.0",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
-  }
+  },
+  "type": "module"
 }
