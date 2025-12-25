@@ -7,15 +7,11 @@ import { truncateAllTables } from "./utils/truncate_all_table";
 import jwt from "jsonwebtoken";
 
 const BASE_URL = "/api";
-const VALID_APP_TOKEN = process.env.API_KEY; // Ton token d'application global
+const VALID_APP_TOKEN = process.env.API_KEY;
 
 if (!VALID_APP_TOKEN) {
   throw new Error("API_KEY doit être défini dans le .env pour les tests");
 }
-
-// Sauvegarde temporaire des variables d'environnement pour les tests d'erreur de config
-const ORIGINAL_JWT_SECRET = process.env.JWT_SECRET;
-const ORIGINAL_JWT_EXPIRATION = process.env.JWT_EXPIRATION;
 
 test.group("Login", (group) => {
   group.each.setup(async () => {

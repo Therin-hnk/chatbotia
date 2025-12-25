@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 
 export async function middleware(req: any) {
   console.log("Middleware called for:", req.nextUrl.pathname);
+
+  const publicPaths = ["/api/chat"];
+
   const app_key = req.headers.get("authorization") || req.headers.get("Authorization") as string;
 
   // Gérer les requêtes OPTIONS pour les vérifications CORS
@@ -11,6 +14,11 @@ export async function middleware(req: any) {
 
   try {
     // Gestion des routes
+
+    if( publicPaths.some((path) => req.nextUrl.pathname.startsWith(path))) {
+      return NextResponse.next();
+    }
+
     console.log(`Bearer ${process.env.API_KEY}`);
     if (app_key !== `Bearer ${process.env.API_KEY}`) {
       return unauthorizedResponse("Unauthorized");
