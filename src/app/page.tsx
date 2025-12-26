@@ -1,12 +1,25 @@
+// app/page.tsx
+
+import Header from './components/Header';
+import Hero from './components/Hero';
+import WhyChoose from './components/WhyChoose';
+import TechnologySection from './components/TechnologySection';
+import Testimonials from './components/Testimonials';
+import CTASection from './components/CTASection';
+import Footer from './components/Footer';
+
 export default function Home() {
   return (
-    <div className="bg-white w-[400px]">
-      <iframe
-        src="http://localhost:3000/chatbot/22222222-2222-2222-2222-222222222222"
-        width="400"
-        height="600"
-        data-api-key="22222222-2222-2222-2222-222222222222"
-      ></iframe>
+    <div className="relative flex min-h-screen w-full flex-col group/design-root">
+      <Header />
+      <main className="flex-1 flex flex-col">
+        <Hero />
+        <WhyChoose />
+        <TechnologySection />
+        <Testimonials />
+        <CTASection />
+      </main>
+      <Footer />
     </div>
   );
 }
