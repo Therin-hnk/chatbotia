@@ -1,65 +1,62 @@
-// components/Header.tsx
-
-'use client';
-
 import { Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const router = useRouter();
 
-  // Vérifie si l'utilisateur est connecté
-  const isAuthenticated = typeof window !== 'undefined' && !!localStorage.getItem("authToken");
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    setIsAuthenticated(!!token);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("userId");
     localStorage.removeItem("user");
+    setIsAuthenticated(false);
     router.push("/login");
-    router.refresh(); // Optionnel : force le refresh pour mettre à jour les pages protégées
   };
 
+  if (isAuthenticated === null) {
+    return null;
+  }
+
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200/80 shadow-sm">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-24">
+        <div className="flex items-center justify-between h-16">
+
           {/* Logo */}
-          <a href='/' className="flex items-center gap-2 sm:gap-3">
-            <div className="w-10 h-10 sm:w-10 sm:h-10 text-blue-600">
-              <img src="/logo.png" alt="Chatbotia Logo" className="w-full h-full object-contain" />
+          <a href="/" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 transition-transform group-hover:scale-105">
+              <img
+                src="/logo.png"
+                alt="Chatbotia Logo"
+                className="w-full h-full object-contain"
+              />
             </div>
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900">Chatbotia</h2>
+            <h2 className="text-lg font-semibold text-gray-900 tracking-tight">
+              Chatbotia
+            </h2>
           </a>
 
-          {/* Navigation Desktop */}
-          <nav className="hidden lg:flex items-center gap-8">
-            <a className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors" href="#features">
-              Fonctionnalités
-            </a>
-            <a className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors" href="#pricing">
-              Tarifs
-            </a>
-            <a className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors" href="#blog">
-              Blog
-            </a>
-          </nav>
-
           {/* Actions Desktop */}
-          <div className="hidden sm:flex items-center gap-3 lg:gap-4">
+          <div className="hidden sm:flex items-center gap-4">
             {isAuthenticated ? (
               <>
                 <a
                   href="/dashboard"
-                  className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-all"
                 >
                   <LayoutDashboard className="w-4 h-4" />
-                  Tableau de bord
+                  Dashboard
                 </a>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 lg:px-6 h-9 lg:h-10 bg-red-600 text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-red-700 transition-colors"
+                  className="flex items-center gap-2 px-5 h-9 bg-red-900 text-white text-sm font-semibold rounded-full hover:bg-gray-800 hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
                   <LogOut className="w-4 h-4" />
                   Déconnexion
@@ -67,12 +64,15 @@ export default function Header() {
               </>
             ) : (
               <>
-                <a className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors" href="/login">
+                <a
+                  href="/login"
+                  className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-all"
+                >
                   Connexion
                 </a>
                 <a
                   href="/signup"
-                  className="flex items-center justify-center px-4 lg:px-6 h-9 lg:h-10 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-blue-700 transition-colors"
+                  className="flex items-center justify-center px-5 h-9 bg-gray-900 text-white text-sm font-semibold rounded-full hover:bg-gray-800 hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
                   S'inscrire
                 </a>
@@ -80,44 +80,32 @@ export default function Header() {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="sm:hidden p-2 text-gray-700 hover:text-blue-600 transition-colors"
+            className="sm:hidden p-2 -mr-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all active:scale-95"
             aria-label="Menu"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="sm:hidden border-t border-gray-200 py-4 space-y-4 bg-white">
-            <nav className="flex flex-col space-y-3">
-              <a className="text-base font-medium text-gray-700 hover:text-blue-600 transition-colors px-2 py-2" href="#features">
-                Fonctionnalités
-              </a>
-              <a className="text-base font-medium text-gray-700 hover:text-blue-600 transition-colors px-2 py-2" href="#pricing">
-                Tarifs
-              </a>
-              <a className="text-base font-medium text-gray-700 hover:text-blue-600 transition-colors px-2 py-2" href="#blog">
-                Blog
-              </a>
-            </nav>
-
-            <div className="flex flex-col gap-3 pt-3 border-t border-gray-200">
+          <div className="sm:hidden border-t border-gray-200 py-4 space-y-2 bg-white/95 backdrop-blur-xl">
+            <div className="flex flex-col gap-2">
               {isAuthenticated ? (
                 <>
                   <a
                     href="/dashboard"
-                    className="text-base font-medium text-gray-700 hover:text-blue-600 transition-colors px-2 py-2 flex items-center gap-2"
+                    className="px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-xl flex items-center gap-3 transition-all"
                   >
                     <LayoutDashboard className="w-5 h-5" />
-                    Tableau de bord
+                    Dashboard
                   </a>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center justify-center gap-2 h-11 bg-red-600 text-white text-base font-semibold rounded-lg shadow-sm hover:bg-red-700 transition-colors"
+                    className="flex items-center justify-center gap-3 h-12 bg-red-900 text-white text-base font-semibold rounded-xl hover:bg-gray-800 transition-all mt-2"
                   >
                     <LogOut className="w-5 h-5" />
                     Déconnexion
@@ -125,12 +113,15 @@ export default function Header() {
                 </>
               ) : (
                 <>
-                  <a className="text-base font-medium text-gray-700 hover:text-blue-600 transition-colors px-2 py-2" href="/login">
+                  <a
+                    href="/login"
+                    className="px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-all"
+                  >
                     Connexion
                   </a>
                   <a
                     href="/signup"
-                    className="flex items-center justify-center h-11 bg-blue-600 text-white text-base font-semibold rounded-lg shadow-sm hover:bg-blue-700 transition-colors"
+                    className="flex items-center justify-center h-12 bg-gray-900 text-white text-base font-semibold rounded-xl hover:bg-gray-800 transition-all mt-2"
                   >
                     S'inscrire
                   </a>

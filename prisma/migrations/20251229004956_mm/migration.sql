@@ -17,6 +17,7 @@ CREATE TABLE "chatbots" (
     "apiKey" TEXT NOT NULL,
     "name" TEXT,
     "basePrompt" TEXT NOT NULL,
+    "requestCount" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

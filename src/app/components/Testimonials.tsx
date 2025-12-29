@@ -26,24 +26,27 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-20 bg-gray-50 relative overflow-hidden">
-      <div className="container mx-auto max-w-7xl relative z-10">
+    <section className="py-20 px-6 sm:px-8 lg:px-24 bg-white relative overflow-hidden">
+      {/* Subtle background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white"></div>
+      
+      <div className="container mx-auto max-w-6xl relative z-10">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 md:mb-10 gap-4">
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 tracking-tight">
-            Ce que disent nos utilisateurs
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-gray-900 tracking-tight">
+            Ils nous font confiance
           </h2>
           
-          {/* Navigation Buttons - Hidden on mobile */}
+          {/* Navigation Buttons */}
           <div className="hidden sm:flex gap-2">
             <button 
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-white hover:shadow-sm transition-all bg-white"
+              className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all duration-200 active:scale-95"
               aria-label="Témoignage précédent"
             >
               <ChevronLeft className="w-5 h-5 text-gray-700" />
             </button>
             <button 
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-white hover:shadow-sm transition-all bg-white"
+              className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all duration-200 active:scale-95"
               aria-label="Témoignage suivant"
             >
               <ChevronRight className="w-5 h-5 text-gray-700" />
@@ -52,35 +55,44 @@ export default function Testimonials() {
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((testimonial, index) => (
             <div 
               key={index}
-              className="bg-white p-5 sm:p-6 rounded-2xl border border-gray-200 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow"
+              className="group relative"
             >
-              {/* Stars */}
-              <div className="flex items-center gap-1 text-amber-400">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-current" />
-                ))}
-              </div>
+              {/* Hover glow */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl opacity-0 group-hover:opacity-5 blur transition-all duration-500"></div>
+              
+              {/* Card */}
+              <div className="relative bg-white/80 backdrop-blur-xl p-8 rounded-3xl border border-gray-200 group-hover:border-gray-300 flex flex-col gap-6 shadow-sm group-hover:shadow-lg transition-all duration-500 h-full">
+                {/* Stars */}
+                <div className="flex items-center gap-1">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star 
+                      key={i} 
+                      className="w-4 h-4 fill-amber-400 text-amber-400" 
+                    />
+                  ))}
+                </div>
 
-              {/* Testimonial Text */}
-              <p className="text-gray-800 font-medium text-base sm:text-lg leading-snug flex-grow">
-                "{testimonial.text}"
-              </p>
+                {/* Testimonial Text */}
+                <p className="text-gray-700 text-base leading-relaxed flex-grow">
+                  "{testimonial.text}"
+                </p>
 
-              {/* Author Info */}
-              <div className="flex items-center gap-3 pt-4 border-t border-gray-200">
-                <div 
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cover bg-center flex-shrink-0"
-                  style={{ backgroundImage: `url("${testimonial.avatar}")` }}
-                  role="img"
-                  aria-label={`Photo de ${testimonial.name}`}
-                />
-                <div>
-                  <p className="text-sm font-bold text-gray-900">{testimonial.name}</p>
-                  <p className="text-xs sm:text-sm text-gray-600">{testimonial.role}</p>
+                {/* Author Info */}
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                  <div 
+                    className="w-11 h-11 rounded-full bg-cover bg-center flex-shrink-0 ring-2 ring-gray-100"
+                    style={{ backgroundImage: `url("${testimonial.avatar}")` }}
+                    role="img"
+                    aria-label={`Photo de ${testimonial.name}`}
+                  />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">{testimonial.name}</p>
+                    <p className="text-xs text-gray-500">{testimonial.role}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -88,11 +100,13 @@ export default function Testimonials() {
         </div>
 
         {/* Mobile Navigation Dots */}
-        <div className="flex sm:hidden justify-center gap-2 mt-6">
+        <div className="flex sm:hidden justify-center gap-2 mt-8">
           {testimonials.map((_, index) => (
             <button
               key={index}
-              className="w-2 h-2 rounded-full bg-gray-300 hover:bg-gray-400 transition-colors"
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                index === 0 ? 'w-6 bg-gray-900' : 'w-1.5 bg-gray-300'
+              }`}
               aria-label={`Aller au témoignage ${index + 1}`}
             />
           ))}

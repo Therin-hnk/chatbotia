@@ -5,7 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-// import Header from "@/components/Header";
+import ClientLayout from "./ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -136,9 +136,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background-light text-[#111418]`}
       >
-        <Header />
-        {children}
-        <Footer />
+        <ClientLayout>{children}</ClientLayout>
 
         {/* Google Analytics 4 Script */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-DWPNTY5J4K"></script>
