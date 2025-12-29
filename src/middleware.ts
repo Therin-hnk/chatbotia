@@ -1,56 +1,47 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function middleware(req: any) {
-  console.log("Middleware called for:", req.nextUrl.pathname);
+const PUBLIC_PATHS = ["/api/chat", "/api/chatbots/[apiKey]"]; // routes accessibles publiquement
+const API_KEY = process.env.API_KEY;
 
-  const publicPaths = ["/api/chat"];
+export async function middleware(request: NextRequest) {
+  console.log("Middleware called for:", request.nextUrl.pathname);
 
-  const app_key = req.headers.get("authorization") || req.headers.get("Authorization") as string;
-
-  // Gérer les requêtes OPTIONS pour les vérifications CORS
-  if (req.method === "OPTIONS") {
-    return handleOptions();
+  // CORS preflight
+  if (request.method === "OPTIONS") {
+    return new NextResponse(null, { status: 204, headers: corsHeaders() });
   }
 
-  try {
-    // Gestion des routes
-
-    if( publicPaths.some((path) => req.nextUrl.pathname.startsWith(path))) {
-      return NextResponse.next();
-    }
-
-    console.log(`Bearer ${process.env.API_KEY}`);
-    if (app_key !== `Bearer ${process.env.API_KEY}`) {
-      return unauthorizedResponse("Unauthorized");
-    }
+  // Routes publiques (widget client, récupération info chatbot)
+  if (PUBLIC_PATHS.some(path => request.nextUrl.pathname.startsWith(path))) {
     return NextResponse.next();
-
-  } catch (e) {
-    console.error("Error on authorization", e);
-    return unauthorizedResponse("Unauthorized");
   }
+
+  // Récupérer la clé API
+  const authHeader = request.headers.get("authorization") ?? request.headers.get("Authorization");
+
+  // Exception : si la requête vient du même domaine → on laisse passer (confiance interne)
+  const origin = request.headers.get("origin");
+  const host = request.headers.get("host");
+
+  console.log("Origin:", origin, "Host:", host);
+  const isSameOrigin = origin === null || origin?.includes(host || "");
+
+  if (isSameOrigin) {
+    console.log("Requête interne (même origine) → autorisée sans clé API");
+    return NextResponse.next();
+  }
+
+  // Sinon : vérification stricte de la clé API
+  if (!API_KEY || authHeader !== `Bearer ${API_KEY}`) {
+    return NextResponse.json(
+      { message: "Accès non autorisé", success: false },
+      { status: 401, headers: corsHeaders() }
+    );
+  }
+
+  return NextResponse.next();
 }
 
-// Réponse d'autorisation refusée avec CORS
-function unauthorizedResponse(message: string) {
-  return NextResponse.json(
-    { message, success: false },
-    {
-      status: 401,
-      headers: corsHeaders(),
-    }
-  );
-}
-
-// Gérer les requêtes OPTIONS pour CORS
-function handleOptions() {
-  return new Response(null, {
-    status: 204,
-    headers: corsHeaders(),
-  });
-}
-
-// En-têtes CORS communs
 function corsHeaders() {
   return {
     "Access-Control-Allow-Origin": "*",
@@ -59,7 +50,6 @@ function corsHeaders() {
   };
 }
 
-// Limiter le middleware aux chemins commençant par `/api/`
 export const config = {
   matcher: "/api/:path*",
 };

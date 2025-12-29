@@ -83,6 +83,12 @@ export async function POST(req: NextRequest) {
     const data = await response.json();
     const aiResponse = data.choices[0].message.content.trim();
 
+    // update requestCount
+    await prisma.chatbot.update({
+      where: { apiKey },
+      data: { requestCount: { increment: 1 } },
+    });
+
     // 5. Réponse succès
     return tryResponseFunction(
       {

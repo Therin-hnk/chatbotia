@@ -11,7 +11,6 @@ import Footer from './components/Footer';
 export default function Home() {
   return (
     <div className="relative flex min-h-screen w-full flex-col group/design-root">
-      <Header />
       <main className="flex-1 flex flex-col">
         <Hero />
         <WhyChoose />
@@ -19,7 +18,6 @@ export default function Home() {
         <Testimonials />
         <CTASection />
       </main>
-      <Footer />
     </div>
   );
 }

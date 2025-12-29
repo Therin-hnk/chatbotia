@@ -9,6 +9,7 @@ interface ChatbotData {
   name: string;
   styles: {
     primaryColor: string;
+    secondaryColor: string;
     textColor: string;
     backgroundColor: string;
     botMessageColor: string;

@@ -33,12 +33,12 @@ export default function Header() {
 
           {/* Actions Desktop */}
           <div className="hidden sm:flex items-center gap-3 lg:gap-4">
-            <a className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors" href="#">
+            <a className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors" href="/signin">
               Connexion
             </a>
-            <button className="flex items-center justify-center px-4 lg:px-6 h-9 lg:h-10 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-blue-700 transition-colors">
+            <a href='/signup' className="flex items-center justify-center px-4 lg:px-6 h-9 lg:h-10 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-blue-700 transition-colors">
               S'inscrire
-            </button>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}

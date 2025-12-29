@@ -3,6 +3,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 // import Header from "@/components/Header";
 
 const geistSans = Geist({
@@ -134,8 +136,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background-light text-[#111418]`}
       >
-        {/* <Header /> */}
+        <Header />
         {children}
+        <Footer />
 
         {/* Google Analytics 4 Script */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-DWPNTY5J4K"></script>

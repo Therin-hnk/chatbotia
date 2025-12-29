@@ -18,6 +18,8 @@ export async function GET(
         name: true,
         basePrompt: true,
         customization: true,
+        requestCount: true,
+        apiKey: true,
       },
     });
 
@@ -42,6 +44,9 @@ export async function GET(
     return tryResponseFunction(
       {
         name: chatbot.name,
+        basePrompt: chatbot.basePrompt,
+        requestCount: chatbot.requestCount,
+        apiKey,
         styles,
       },
       200

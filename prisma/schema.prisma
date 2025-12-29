@@ -30,6 +30,8 @@ model Chatbot {
   
   basePrompt String   // Prompt système qui définit le comportement de l'IA
 
+  requestCount Int      @default(0)  // Nombre total de messages envoyés via /api/chat
+
   // Personnalisation visuelle
   customization ChatbotCustomization?
 
