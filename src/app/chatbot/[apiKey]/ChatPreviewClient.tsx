@@ -53,7 +53,7 @@ export default function ChatPreviewClient({ apiKey }: { apiKey: string }) {
 
   return (
     <div className="justify-center p-4 pt-8">
-      <ChatWidget apiKey={apiKey} styles={chatbotData.styles} />
+      <ChatWidget apiKey={apiKey} styles={chatbotData.styles} defaultOpen={true}/>
     </div>
   );
 }

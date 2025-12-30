@@ -41,23 +41,6 @@ export default function StatsCards({ stats }: StatsCardsProps) {
           {stats?.totalRequests?.toLocaleString() || 0}
         </p>
       </div>
-
-      {/* Card 3: Placeholder pour future stat */}
-      {/* <div className="rounded-lg sm:rounded-xl p-4 sm:p-6 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-        <div className="flex items-center justify-between mb-3 sm:mb-2">
-          <p className="text-xs sm:text-sm font-medium uppercase text-gray-500 tracking-wide">
-            Utilisateurs actifs
-          </p>
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
-            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          </div>
-        </div>
-        <p className="text-2xl sm:text-3xl font-bold text-gray-900">
-          0
-        </p>
-      </div> */}
     </div>
   );
 }

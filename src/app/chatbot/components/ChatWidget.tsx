@@ -32,10 +32,11 @@ interface Props {
     placeholder?: string | null;
     secondaryColor: string;
   };
+  defaultOpen?:boolean;
 }
 
-export default function ChatWidget({ apiKey, styles }: Props) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function ChatWidget({ apiKey, styles, defaultOpen = false }: Props) {
+  const [isOpen, setIsOpen] = useState( defaultOpen );
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -54,6 +55,10 @@ export default function ChatWidget({ apiKey, styles }: Props) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    setIsOpen(defaultOpen);
+  }, [defaultOpen]);
 
   const handleSend = async (text: string) => {
     if (!text.trim()) return;

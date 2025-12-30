@@ -5,6 +5,8 @@ import { Edit, Eye, Code, Trash2 } from "lucide-react";
 import PreviewModal from "./PreviewModal";
 import { useState } from "react";
 import IntegrationModal from "./IntegrationModal";
+import { useRouter } from "next/navigation";
+import { confirmPopup, showErrorPopup, showLoadingPopup, showSuccessPopup } from "./ui/ConfirmPopup";
 
 interface ChatbotCardProps {
   chatbot: {
@@ -22,6 +24,42 @@ export default function ChatbotCard({ chatbot }: ChatbotCardProps) {
   const [integrationOpen, setIntegrationOpen] = useState(false);
 
   const [previewOpen, setPreviewOpen] = useState(false);
+
+  const router = useRouter();
+
+  const handleDelete = async () => {
+    const confirmed = await confirmPopup({
+      title: "Supprimer le chatbot ?",
+      itemName: chatbot.name,
+      confirmButtonText: "Supprimer définitivement",
+      cancelButtonText: "Annuler",
+    });
+
+    if (!confirmed) return;
+
+    showLoadingPopup("Suppression en cours...");
+
+    const token = localStorage.getItem("authToken");
+
+    try {
+      const res = await fetch(`/api/chatbots/delete/${chatbot.id}`, {
+        method: "DELETE",
+        headers: {
+          "x-api-token": token || "",
+        },
+      });
+
+      if (res.ok) {
+        showSuccessPopup("Supprimé !", "Le chatbot a été supprimé avec succès.");
+        window.location.reload();
+      } else {
+        const data = await res.json();
+        showErrorPopup("Erreur", data.message || "Impossible de supprimer le chatbot");
+      }
+    } catch (err) {
+      showErrorPopup("Erreur réseau", "Vérifiez votre connexion et réessayez.");
+    }
+  };
 
   return (
     <div className="group flex flex-col sm:grid sm:grid-cols-12 gap-3 sm:gap-4 rounded-lg sm:rounded-xl bg-white p-3 sm:p-4 shadow-sm border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200">
@@ -99,6 +137,7 @@ export default function ChatbotCard({ chatbot }: ChatbotCardProps) {
         <button 
           className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors" 
           title="Supprimer"
+          onClick={handleDelete}
         >
           <Trash2 className="w-4 h-4" />
         </button>

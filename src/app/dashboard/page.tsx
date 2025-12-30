@@ -29,7 +29,7 @@ export default function DashboardPage() {
         // Vérification token côté client
         const token = localStorage.getItem("authToken");
         
-        console.log("Token récupéré:", token); // Debug
+        // console.log("Token récupéré:", token); // Debug
 
         if (!token) {
           console.log("Token non trouvé, redirection vers la page de connexion.");

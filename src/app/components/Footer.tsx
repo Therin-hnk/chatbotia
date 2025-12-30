@@ -4,15 +4,15 @@ export default function Footer() {
   const footerLinks = {
     product: {
       title: "Produit",
-      links: ["Fonctionnalités", "Tarifs", "Intégrations", "API", "Documentation"]
+      links: ["Intégrations", "API", "Documentation"]
     },
     company: {
       title: "Entreprise",
-      links: ["À propos", "Blog", "Carrières", "Presse", "Partenaires"]
+      links: ["À propos", "nous contacter"]
     },
     resources: {
       title: "Ressources",
-      links: ["Centre d'aide", "Communauté", "Tutoriels", "Webinaires", "Status"]
+      links: ["Tutoriels"]
     },
     legal: {
       title: "Légal",
@@ -98,22 +98,8 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-200 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs sm:text-sm text-gray-600 text-center sm:text-left">
-            © 2024 Chatbotia Inc. Tous droits réservés.
+            © 2025 Chatbotia. Tous droits réservés.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-            <a className="text-xs sm:text-sm text-gray-600 hover:text-blue-600 transition-colors" href="#">
-              Confidentialité
-            </a>
-            <a className="text-xs sm:text-sm text-gray-600 hover:text-blue-600 transition-colors" href="#">
-              Conditions
-            </a>
-            <a className="text-xs sm:text-sm text-gray-600 hover:text-blue-600 transition-colors" href="#">
-              Cookies
-            </a>
-            <a className="text-xs sm:text-sm text-gray-600 hover:text-blue-600 transition-colors" href="#">
-              Accessibilité
-            </a>
-          </div>
         </div>
       </div>
     </footer>

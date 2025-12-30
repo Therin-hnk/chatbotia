@@ -24,3 +24,27 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.swal-global-popup {
+  border-radius: 16px !important;
+  padding: 1.5rem !important;
+  max-width: 500px !important;
+}
+
+.swal-global-confirm {
+  background-color: #dc2626 !important;
+  color: white !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 0.75rem !important;
+  font-weight: 600 !important;
+  min-width: 120px;
+}
+
+.swal-global-cancel {
+  background-color: #e5e7eb !important;
+  color: #374151 !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 0.75rem !important;
+  font-weight: 600 !important;
+}
